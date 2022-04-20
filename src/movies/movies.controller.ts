@@ -1,34 +1,34 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Movie } from './entities/movie.entity';
+import { MoviesService } from './movies.service';
 
 @Controller('movies') // url entry point
 export class MoviesController {
-  @Get()
-  getAll(): string {
-    return 'This will return all movies';
-  }
+  // node 처럼 모듈을 수동으로 import 해서 쓰지 않음
+  constructor(private readonly movieService: MoviesService) {}
 
-  @Get('search')
-  search(@Query('year') searchingYear: string) {
-    return `We are searching for a movie with a made after: ${searchingYear}`;
+  @Get()
+  getAll(): Movie[] {
+    return this.movieService.getAll();
   }
 
   // search를 위에 나두고 나니, search로 입력했을 땐 search가
   // id를 입력했을 땐 id로 매핑됨
   // 내 생각엔 search랑 일치하면 search타고 그 외에는 자동으로 id로 매핑되는듯
   @Get('/:id')
-  getOne(@Param('id') movieId: string): string {
+  getOne(@Param('id') movieId: string): Movie {
     // ⭐ Nest에서는 무언가 필요하면 요청해야함 ⭐
-    return `This will return one Movie with the id: ${movieId}`;
+    return this.movieService.getOne(movieId);
   }
 
   @Post()
   create(@Body() movieData) {
-    return movieData;
+    return this.movieService.create(movieData);
   }
 
   @Delete('/:id')
   remove(@Param('id') movieId: string) {
-    return `This will delete a movie with the id: ${movieId}`;
+    return this.movieService.deleteOne(movieId);
   }
 
   @Patch('/:id')
