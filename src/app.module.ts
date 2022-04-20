@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { MoviesController } from './movies/movies.controller';
 
 /* @Module => Decorator
 .* 클래스에 함수 기능을 추가할 수 있게 해줌
@@ -8,7 +7,7 @@ import { AppService } from './app.service';
 .*/
 @Module({
   imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [MoviesController],
+  providers: [],
 })
 export class AppModule {} // root Module
