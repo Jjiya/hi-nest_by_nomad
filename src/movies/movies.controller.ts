@@ -33,10 +33,7 @@ export class MoviesController {
 
   @Patch('/:id')
   update(@Param('id') movieId: string, @Body() updateData) {
-    return {
-      updatedMovie: movieId,
-      ...updateData,
-    };
+    return this.movieService.update(movieId, updateData);
   }
 
   // search가 여기 있으면 같은 Get mapping이면서 파일 상단에 있는 /:id가 실행된다.
