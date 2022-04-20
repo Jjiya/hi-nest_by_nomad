@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { CreateMovieDto } from './dto/create-movie.dto';
 import { Movie } from './entities/movie.entity';
 import { MoviesService } from './movies.service';
 
@@ -16,23 +17,23 @@ export class MoviesController {
   // id를 입력했을 땐 id로 매핑됨
   // 내 생각엔 search랑 일치하면 search타고 그 외에는 자동으로 id로 매핑되는듯
   @Get('/:id')
-  getOne(@Param('id') movieId: string): Movie {
+  getOne(@Param('id') movieId: number): Movie {
     // ⭐ Nest에서는 무언가 필요하면 요청해야함 ⭐
     return this.movieService.getOne(movieId);
   }
 
   @Post()
-  create(@Body() movieData) {
+  create(@Body() movieData: CreateMovieDto) {
     return this.movieService.create(movieData);
   }
 
   @Delete('/:id')
-  remove(@Param('id') movieId: string) {
+  remove(@Param('id') movieId: number) {
     return this.movieService.deleteOne(movieId);
   }
 
   @Patch('/:id')
-  update(@Param('id') movieId: string, @Body() updateData) {
+  update(@Param('id') movieId: number, @Body() updateData) {
     return this.movieService.update(movieId, updateData);
   }
 
