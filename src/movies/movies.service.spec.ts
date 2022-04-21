@@ -5,6 +5,8 @@ import { MoviesService } from './movies.service';
 describe('MoviesService', () => {
   let service: MoviesService;
 
+  // 테스트 실행 전 아래 코드 수행
+  // 테스트 별 공통적으로 존재하는 로직(ex. 영화 데이터 생성)이 있다면 아래에 기술
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [MoviesService],
@@ -16,6 +18,9 @@ describe('MoviesService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  // afterAll: 테스트를 끝난 후 진행할 로직 ex) 데이터 베이스 삭제 등
+  // 이 외에도 다양한 함수가 존재
 
   // getAll() 테스트
   describe('getAll', () => {
@@ -103,6 +108,27 @@ describe('MoviesService', () => {
         expect(error).toBeUndefined();
       }
       */
+    });
+  }); // describe('create')
+
+  describe('update', () => {
+    it('should update a movie', () => {
+      const id = service.create({ title: 'test', year: 2000, genres: ['test'] });
+
+      service.update(id, { title: 'Update Test' });
+
+      const movie = service.getOne(id);
+
+      expect(movie.title).toEqual('Update Test');
+    });
+
+    it('should throw a NotFoundException', () => {
+      try {
+        service.update(999, { title: 'Update Test' });
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect(error.message).toEqual('Sorry. Movie with ID 999 not found.');
+      }
     });
   });
 }); // describe('MoviesService')
