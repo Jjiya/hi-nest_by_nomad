@@ -1,4 +1,6 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { Movie } from './entities/movie.entity';
 import { MoviesService } from './movies.service';
 
 describe('MoviesService', () => {
@@ -14,5 +16,33 @@ describe('MoviesService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  // getAll() 테스트
+  describe('getAll', () => {
+    // return이 array 타입인지.
+    it('should return an array', () => {
+      const result = service.getAll();
+      expect(result).toBeInstanceOf(Array);
+    });
+  });
+
+  describe('getOne', () => {
+    it('should return a movie', () => {
+      const id = service.create({ title: 'test', year: 2000, genres: ['test'] });
+
+      const result = service.getOne(1);
+      expect(result).toBeDefined();
+      expect(result.id).toEqual(id);
+    });
+
+    it('should throw 404 error', () => {
+      try {
+        service.getOne(999);
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect(error.message).toEqual('Sorry. Movie with ID 999 not found.');
+      }
+    });
   });
 });

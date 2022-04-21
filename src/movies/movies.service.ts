@@ -30,10 +30,12 @@ export class MoviesService {
   } //end deleteOne()
 
   create(movieData: CreateMovieDto) {
+    const id = this.movies.length + 1;
     this.movies.push({
-      id: this.movies.length + 1, //this.movies.length++ 하니까 null 배열이 생김... why?  >> a++은 a+=1 이고, arr.length++은 결국 arr의 length를 1늘리겠다는 말. arr의 index만 증가하고 안에 값은 없는 상태가 되지....
+      id, //this.movies.length++ 하니까 null 배열이 생김... why?  >> a++은 a+=1 이고, arr.length++은 결국 arr의 length를 1늘리겠다는 말. arr의 index만 증가하고 안에 값은 없는 상태가 되지....
       ...movieData,
     });
+    return id;
   } //end create()
 
   update(id: number, updateData: UpdateMovieDto) {
